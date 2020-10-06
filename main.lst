@@ -102,7 +102,7 @@ ARM Macro Assembler    Page 2
    51 0000005E         
    52 0000005E         Question2
    53 0000005E         
-   54 0000005E 482D            LDR              R0, =ARRAY  ;Load R0 with nums
+   54 0000005E 4830            LDR              R0, =ARRAY  ;Load R0 with nums
    55 00000060 F04F 0100       MOV              R1, #0      ;Reset R1 to 0 for 
                                                             calculation
    56 00000064 F04F 0300       MOV              R3, #0      ;Reset R3 to 0 for 
@@ -212,68 +212,77 @@ ARM Macro Assembler    Page 4
                                                             1
   126 000000E0 F04F 0204       MOV              R2, #4      ;Put value y into r
                                                             2
-  127 000000E4 2A00            CMP              R2, #0      ;Check for negative
+  127 000000E4 2901            CMP              R1, #1      ;Check if value is 
+                                                            one
+  128 000000E6 D014            BEQ              valueIsOne
+  129 000000E8 2A00            CMP              R2, #0      ;Check for negative
                                                              exponent
-  128 000000E6 DB12            BLT              negativeExponent
-  129 000000E8 460B            MOV              R3, R1      ;Make copy of value
+  130 000000EA DB15            BLT              negativeExponent
+  131 000000EC 460B            MOV              R3, R1      ;Make copy of value
                                                              that is being mult
                                                             iplied by itself
-  130 000000EA B12A            CBZ              R2, exponentIsZero ;Branch if e
+  132 000000EE B12A            CBZ              R2, exponentIsZero ;Branch if e
                                                             xponent is 0
-  131 000000EC 2A01            CMP              R2, #1      ;Compare exponent t
+  133 000000F0 2A01            CMP              R2, #1      ;Compare exponent t
                                                             o 1
-  132 000000EE D006            BEQ              exponentIsOne ;Branch if expone
+  134 000000F2 D006            BEQ              exponentIsOne ;Branch if expone
                                                             nt is one
-  133 000000F0 F1A2 0201       SUB              R2, R2, #1  ;Minus 1 from expon
+  135 000000F4 F1A2 0201       SUB              R2, R2, #1  ;Minus 1 from expon
                                                             ent before looping 
                                                             and multiplying
-  134 000000F4 E005            B                powerLoop   ;PowerLoop for mult
+  136 000000F8 E005            B                powerLoop   ;PowerLoop for mult
                                                             iplying power
-  135 000000F6 4770            BX               LR
-  136 000000F8         exponentIsZero
-  137 000000F8 F04F 0001       MOV              R0, #1      ;If exponent is 0, 
+  137 000000FA 4770            BX               LR
+  138 000000FC         exponentIsZero
+  139 000000FC F04F 0001       MOV              R0, #1      ;If exponent is 0, 
                                                             1 is output so move
                                                              1 to output
-  138 000000FC 4770            BX               LR          ;back to main
-  139 000000FE         exponentIsOne
-  140 000000FE 4608            MOV              R0, R1      ;If exponent is 1, 
+  140 00000100 4770            BX               LR          ;back to main
+  141 00000102         exponentIsOne
+  142 00000102 4608            MOV              R0, R1      ;If exponent is 1, 
                                                             R1 (x) is output so
                                                              move x to output
-  141 00000100 4770            BX               LR          ; Back to main
-  142 00000102         powerLoop
-  143 00000102 FB01 F103       MUL              R1, R1, R3  ;Multiply R1 by ori
+  143 00000104 4770            BX               LR          ; Back to main
+  144 00000106         powerLoop
+  145 00000106 FB01 F103       MUL              R1, R1, R3  ;Multiply R1 by ori
                                                             ginal self and stor
                                                             e back into r1
-  144 00000106 1E52            SUBS             R2, R2, #1  ;sub exponent by 1 
+  146 0000010A 1E52            SUBS             R2, R2, #1  ;sub exponent by 1 
                                                             and compare to 1
-  145 00000108 D1FB            BNE              powerLoop   ;If exponent does n
+  147 0000010C D1FB            BNE              powerLoop   ;If exponent does n
                                                             ot equal 1 then loo
                                                             p again
-  146 0000010A 4608            MOV              R0, R1      ; Move R1 which sho
+  148 0000010E 4608            MOV              R0, R1      ; Move R1 which sho
                                                             uld be correct valu
                                                             e into output R0
-  147 0000010C 4770            BX               LR          ;Return to main
-  148 0000010E         
-  149 0000010E         negativeExponent
-  150 0000010E F04F 0000       MOV              R0, #0      ;Move 0 into output
-                                                             because any intege
-                                                            r to a negative exp
+  149 00000110 4770            BX               LR          ;Return to main
+  150 00000112         valueIsOne
+  151 00000112 F04F 0001       MOV              R0, #1      ;If value is one it
 
 
 
 ARM Macro Assembler    Page 5 
 
 
+                                                             will always be 1 n
+                                                            o matter the expone
+                                                            nt
+  152 00000116 4770            BX               LR
+  153 00000118         negativeExponent
+  154 00000118 F04F 0000       MOV              R0, #0      ;Move 0 into output
+                                                             because any intege
+                                                            r to a negative exp
                                                             onent results in a 
                                                             fraction which woul
                                                             d be 0 as an unsign
                                                             ed int.
-  151 00000112 4770            BX               LR
-  152 00000114         
-  153 00000114                 ALIGN                        ; make sure the end
+  155 0000011C 4770            BX               LR
+  156 0000011E         
+  157 0000011E         
+  158 0000011E 00 00           ALIGN                        ; make sure the end
                                                              of this section is
                                                              aligned
-  154 00000114                 END                          ; end of file
+  159 00000120                 END                          ; end of file
               00000000 
 Command Line: --debug --xref --cpu=Cortex-M4 --apcs=interwork --depend=.\main.d
  -o.\main.o -IM:\Keil\ARM\RV31\INC -IM:\Keil\ARM\CMSIS\Include -IM:\Keil\ARM\In
@@ -441,21 +450,21 @@ Relocatable symbols
    Uses
       At line 113 in file main.s
 Comment: cLessThanA used once
-exponentIsOne 000000FE
+exponentIsOne 00000102
 
 Symbol: exponentIsOne
    Definitions
-      At line 139 in file main.s
+      At line 141 in file main.s
    Uses
-      At line 132 in file main.s
+      At line 134 in file main.s
 Comment: exponentIsOne used once
-exponentIsZero 000000F8
+exponentIsZero 000000FC
 
 Symbol: exponentIsZero
    Definitions
-      At line 136 in file main.s
+      At line 138 in file main.s
    Uses
-      At line 130 in file main.s
+      At line 132 in file main.s
 Comment: exponentIsZero used once
 loop 00000016
 
@@ -474,13 +483,13 @@ Symbol: main
    Uses
       None
 Comment: main unused
-negativeExponent 0000010E
+negativeExponent 00000118
 
 Symbol: negativeExponent
    Definitions
-      At line 149 in file main.s
+      At line 153 in file main.s
    Uses
-      At line 128 in file main.s
+      At line 130 in file main.s
 Comment: negativeExponent used once
 negativeOne 00000094
 
@@ -490,11 +499,11 @@ Symbol: negativeOne
    Uses
       At line 72 in file main.s
 Comment: negativeOne used once
-powerLoop 00000102
+powerLoop 00000106
 
 Symbol: powerLoop
    Definitions
-      At line 142 in file main.s
+      At line 144 in file main.s
    Uses
 
 
@@ -502,8 +511,8 @@ Symbol: powerLoop
 ARM Macro Assembler    Page 4 Alphabetic symbol ordering
 Relocatable symbols
 
-      At line 134 in file main.s
-      At line 145 in file main.s
+      At line 136 in file main.s
+      At line 147 in file main.s
 
 sumOfNumbersLoop 00000068
 
@@ -513,6 +522,14 @@ Symbol: sumOfNumbersLoop
    Uses
       At line 62 in file main.s
 Comment: sumOfNumbersLoop used once
+valueIsOne 00000112
+
+Symbol: valueIsOne
+   Definitions
+      At line 150 in file main.s
+   Uses
+      At line 128 in file main.s
+Comment: valueIsOne used once
 zero 0000008E
 
 Symbol: zero
@@ -521,5 +538,5 @@ Symbol: zero
    Uses
       At line 70 in file main.s
 Comment: zero used once
-24 symbols
-359 symbols in table
+25 symbols
+360 symbols in table
