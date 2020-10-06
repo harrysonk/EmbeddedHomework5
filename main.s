@@ -108,9 +108,28 @@ cIsTheMin
 	BX LR
 	
 Question5
+	;Assume r0 is output, r1 and r2 are x and y respectivly
+	MOV R1, #3 ;Put value x into R1
+	MOV R2, #4	;Put value y into r2
+	MOV R3, R1 ;Make copy of value that is being multiplied by itself
+	CBZ R2, exponentIsZero ;Branch if exponent is 0
+	CMP R2, #1 ;Compare exponent to 1
+	BEQ exponentIsOne ;Branch if exponent is one
+	SUB R2, R2, #1 ;Minus 1 from exponent before looping and multiplying
+	B powerLoop ;PowerLoop for multiplying power
 	BX LR
-	
-	
+exponentIsZero
+	MOV R0, #1;If exponent is 0, 1 is output so move 1 to output
+	BX LR ;back to main
+exponentIsOne
+	MOV R0, R1;If exponent is 1, R1 (x) is output so move x to output
+	BX LR ; Back to main
+powerLoop
+	MUL R1, R1, R3 ;Multiply R1 by original self and store back into r1
+	SUBS R2, R2, #1 ;sub exponent by 1 and compare to 1
+	BNE powerLoop ;If exponent does not equal 1 then loop again
+	MOV R0, R1 ; Move R1 which should be correct value into output R0
+	BX LR ;Return to main
 
        ALIGN      ; make sure the end of this section is aligned
        END        ; end of file
