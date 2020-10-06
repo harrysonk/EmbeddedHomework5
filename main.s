@@ -10,7 +10,8 @@
 ;
 ;*******************************************************************
 
-
+	   AREA myData, DATA, READONLY;DataAreaContains an array of 10 unsigned ints
+ARRAY DCD 6,7,8,2,1,8,3,12,11,10
        AREA    |.text|, CODE, READONLY, ALIGN=2
        THUMB
        EXPORT  Start
@@ -50,8 +51,7 @@ Question1
 
 Question2
 
-Nums DCD 6,7,8,2,1,8,3,12,11,10 ; Make Array of numbers
-	LDR R0, =Nums;Load R0 with nums
+	LDR R0, =ARRAY;Load R0 with nums
 	MOV R1, #0 ;Reset R1 to 0 for calculation
 	MOV R3, #0 ;Reset R3 to 0 for calculation
 sumOfNumbersLoop 
