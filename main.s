@@ -49,6 +49,19 @@ Question1
 	BX LR
 
 Question2
+
+Nums DCD 6,7,8,2,1,8,3,12,11,10 ; Make Array of numbers
+	LDR R0, =Nums;Load R0 with nums
+	MOV R1, #0 ;Reset R1 to 0 for calculation
+	MOV R3, #0 ;Reset R3 to 0 for calculation
+sumOfNumbersLoop 
+	LDR R2, [R0, R1] ;Get numbers at iterator point
+	ADD R3, R3, R2 ; Add numbers and store in R3
+	ADD R1, R1, #4 ; Add offset of 4
+	CMP R1, #40 ; is offset greater than40
+	BLO sumOfNumbersLoop ;Branch back to Loop
+	MOV R1, #10 ;Move 10 into r1 to divide by
+	UDIV R0, R3, R1 ;Get average and store into R0, rounds down
 	BX LR
 	
 Question3
