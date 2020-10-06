@@ -111,6 +111,8 @@ Question5
 	;Assume r0 is output, r1 and r2 are x and y respectivly
 	MOV R1, #3 ;Put value x into R1
 	MOV R2, #4	;Put value y into r2
+	CMP R2, #0;Check for negative exponent
+	BLT negativeExponent
 	MOV R3, R1 ;Make copy of value that is being multiplied by itself
 	CBZ R2, exponentIsZero ;Branch if exponent is 0
 	CMP R2, #1 ;Compare exponent to 1
@@ -130,6 +132,10 @@ powerLoop
 	BNE powerLoop ;If exponent does not equal 1 then loop again
 	MOV R0, R1 ; Move R1 which should be correct value into output R0
 	BX LR ;Return to main
+	
+negativeExponent
+	MOV R0, #0 ;Move 0 into output because any integer to a negative exponent results in a fraction which would be 0 as an unsigned int.
+	BX LR
 
        ALIGN      ; make sure the end of this section is aligned
        END        ; end of file
